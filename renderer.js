@@ -34,36 +34,46 @@ async function listSerialPorts() {
 		document.getElementById('error').textContent = adafruitPort;
 		if (adafruitPort) {
 			document.getElementById('error').textContent = 'ohhh shittt';
-
-			const serPort = new SerialPort(adafruitPort.path, {
-				baudRate: 9600
-			});
-            document.getElementById('error').textContent = '2';
-
-			serPort.on('open', function () {
-				document.getElementById('error').textContent = 'Port opened';
-
-				// Write data to the port
-				serPort.write('000100e', function (err) {
-					if (err) {
-						return console.log('Error on write: ', err.message);
-					}
-					document.getElementById('error').textContent =
-						'Data written';
+			try {
+                document.getElementById('error').textContent = 'farther';
+				const serPort = new SerialPort(adafruitPort.path, {
+					baudRate: 9600
 				});
-			});
+				document.getElementById('error').textContent = '2';
 
-			serPort.on('data', function (data) {
-				console.log('Data:', data);
-			});
+				serPort.on('open', function () {
+					document.getElementById('error').textContent =
+						'Port opened';
+					// Write data to the port
+					serPort.write('000100e', function (err) {
+						if (err) {
+							return console.log('Error on write: ', err.message);
+						}
+						document.getElementById('error').textContent =
+							'Data written';
+					});
+				});
 
-			serPort.on('close', function () {
-				console.log('Port closed');
-			});
+				serPort.on('data', function (data) {
+					console.log('Data:', data);
+				});
 
-			serPort.on('error', function (err) {
-				console.log('Error: ', err.message);
-			});
+				serPort.on('close', function () {
+					console.log('Port closed');
+				});
+
+				serPort.on('error', function (err) {
+					console.log('Error: ', err.message);
+				});
+			} catch (error) {
+				console.log(
+					'Error when creating or interacting with SerialPort: ',
+					error
+				);
+				document.getElementById('error').textContent =
+					'Error when creating or interacting with SerialPort: ' +
+					error;
+			}
 		}
 	});
 }
