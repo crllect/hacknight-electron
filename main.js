@@ -1,5 +1,17 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
-const { SerialPort } = require('serialport');
+const SerialPort = require('serialport');
+const Readline = require('@serialport/parser-readline');
+const SerialPort = require('serialport');
+
+SerialPort.list()
+	.then(ports => {
+		ports.forEach(port => {
+			console.log(port.path);
+		});
+	})
+	.catch(err => {
+		console.error('Error:', err.message);
+	});
 
 let mainWindow;
 let port;
@@ -19,55 +31,21 @@ function createWindow() {
 }
 
 function initializeSerialConnection() {
-	SerialPort.list()
-		.then(ports => {
-			const arduinoPort = ports.find(
-				port =>
-					port.manufacturer && port.manufacturer.includes('101')
-			);
+	port = new SerialPort('/dev/cu.usbmodem101', { baudRate: 9600 });
+	const parser = port.pipe(new Readline({ delimiter: '\n' }));
 
-			if (arduinoPort) {
-				port = new SerialPort(arduinoPort.path, { baudRate: 9600 });
+	port.on('open', () => {
+		console.log('Serial port opened');
+	});
 
-				port.on('open', () => {
-					console.log('Serial port opened');
-				});
+	port.on('error', err => {
+		console.error('Error:', err.message);
+	});
 
-				port.on('error', err => {
-					console.error('Error:', err.message);
-				});
-
-				port.on('data', data => {
-					console.log('Data from Arduino:', data);
-					mainWindow.webContents.send('data-received');
-				});
-
-				port.on('open', () => {
-					if (port.isOpen) {
-						console.log(
-							'Serial port opened and connected to Arduino'
-						);
-					}
-				});
-
-				ipcMain.on('submit-time', (event, time) => {
-					if (port && port.isOpen) {
-						port.write(time + 'e');
-						console.log('Data sent to Arduino:', time + 'e');
-					} else {
-						console.error(
-							'Serial port is not open or not connected to Arduino'
-						);
-					}
-				});
-			} else {
-				console.log('Arduino not found, retrying in 1 second...');
-				setTimeout(initializeSerialConnection, 1000);
-			}
-		})
-		.catch(err => {
-			console.error('Error:', err.message);
-		});
+	parser.on('data', data => {
+		console.log('Data from Arduino:', data);
+		mainWindow.webContents.send('data-received', data);
+	});
 }
 
 app.on('ready', () => {
