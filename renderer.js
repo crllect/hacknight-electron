@@ -19,39 +19,41 @@ async function listSerialPorts() {
 			document.getElementById('error').textContent =
 				'No ports discovered';
 		}
-        console.log('ports', ports);
-
+		console.log('ports', ports);
 
 		tableHTML = tableify(ports);
 		document.getElementById('ports').innerHTML = tableHTML;
-        document.getElementById('error').textContent =
-				'Weve made it this far';
+		document.getElementById('error').textContent = 'Weve made it this far';
 		// Find the port with the manufacturer "Adafruit"
 		const adafruitPort = ports.find(
 			port => port.manufacturer === 'Adafruit'
 		);
-        document.getElementById('error').textContent =
-				'Right after adafruit port check';
+		document.getElementById('error').textContent =
+			'Right after adafruit port check';
 		console.log('Adafruit port:', adafruitPort);
-        document.getElementById('error').textContent =
-				adafruitPort;
+		document.getElementById('error').textContent = adafruitPort;
 		if (adafruitPort) {
-            document.getElementById('error').textContent =
-				'ohhh shittt';
+			document.getElementById('error').textContent = 'ohhh shittt';
 
 			// Open a new SerialPort instance for the Adafruit port
-			const serPort = new SerialPort(adafruitPort.path, { baudRate: 9600 });
-            
-            document.getElementById('error').textContent =
-            'naaaa';
-			// Write data to the port
-			serPort.write('000100e', err => {
-				if (err) {
-					return document.getElementById('error').textContent =
-                    'big error :c ' + err.message;
-				}
-				document.getElementById('error').textContent =
-				'Message Written';
+			// Open a new SerialPort instance for the Adafruit port
+			const serPort = new SerialPort(adafruitPort.path, {
+				baudRate: 9600
+			});
+            document.getElementById('error').textContent = 'ohhh NAAAAAA';
+			serPort.on('open', function () {
+				// Write data to the port
+                document.getElementById('error').textContent = 'its open now... shittt';
+				serPort.write('000100e', function (err) {
+					if (err) {
+						return console.log('Error on write: ', err.message);
+					}
+					document.getElementById('error').textContent = 'LETS FUCLING GOOOO';
+				});
+			});
+
+			serPort.on('error', function (err) {
+				console.log('Error: ', err.message);
 			});
 		}
 	});
