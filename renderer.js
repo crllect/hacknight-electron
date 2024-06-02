@@ -25,8 +25,9 @@ async function listSerialPorts() {
 
         // Find the port with the manufacturer "Adafruit"
         const adafruitPort = ports.find(port => port.manufacturer === 'Adafruit');
-
+        console.log('Adafruit port:', adafruitPort);
         if (adafruitPort) {
+            console.log('Adafruit port found:', adafruitPort);
             // Open a new SerialPort instance for the Adafruit port
             const port = new SerialPort(adafruitPort.path, { baudRate: 9600 });
 
