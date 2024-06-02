@@ -7,7 +7,7 @@ form.addEventListener('submit', e => {
 	const time = form.time.value;
 	const interests = form.interests.value;
 
-	const militaryTime = time.padStart(4, '0');
+	const militaryTime = time.padStart(6, '0');
 
 	ipcRenderer.send('submit-time', militaryTime);
 });

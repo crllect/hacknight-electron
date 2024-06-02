@@ -4,7 +4,8 @@
 	"description": "The frontend to my hacknight hackathon project",
 	"main": "main.js",
 	"scripts": {
-		"start": "electron ."
+		"start": "electron .",
+		"test": "git fetch && git pull && npm start"
 	},
 	"dependencies": {
 		"serialport": "^12.0.0",
