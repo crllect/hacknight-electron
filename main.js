@@ -2,15 +2,19 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const Readline = require('@serialport/parser-readline');
 const SerialPort = require('serialport');
 
-SerialPort.list()
-	.then(ports => {
-		ports.forEach(port => {
-			console.log(port.path);
-		});
-	})
-	.catch(err => {
-		console.error('Error:', err.message);
-	});
+async function listPorts() {
+    try {
+        const ports = await SerialPort.list();
+        ports.forEach(port => {
+            console.log(port.path);
+        });
+    } catch (err) {
+        console.error('Error:', err.message);
+    }
+}
+
+listPorts();
+
 
 let mainWindow;
 let port;
