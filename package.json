@@ -1,5 +1,5 @@
 {
-	"name": "electron-serialport",
+	"name": "hacknight-electron",
 	"version": "1.0.2",
 	"description": "A minimal Electron application with node serialport",
 	"main": "main.js",
@@ -11,15 +11,8 @@
 		"type": "git",
 		"url": "git@github.com:serialport/electron-serialport.git"
 	},
-	"keywords": [
-		"Electron",
-		"quick",
-		"start",
-		"tutorial",
-		"demo"
-	],
-	"author": "GitHub",
-	"license": "CC0-1.0",
+	"author": "crllect",
+	"license": "MIT",
 	"devDependencies": {
 		"electron": "^26.4.0"
 	},
