@@ -35,21 +35,30 @@ async function listSerialPorts() {
 		if (adafruitPort) {
 			document.getElementById('error').textContent = 'ohhh shittt';
 
-			// Open a new SerialPort instance for the Adafruit port
-			// Open a new SerialPort instance for the Adafruit port
 			const serPort = new SerialPort(adafruitPort.path, {
 				baudRate: 9600
 			});
-            document.getElementById('error').textContent = 'ohhh NAAAAAA';
+            document.getElementById('error').textContent = '2';
+
 			serPort.on('open', function () {
+				document.getElementById('error').textContent = 'Port opened';
+
 				// Write data to the port
-                document.getElementById('error').textContent = 'its open now... shittt';
 				serPort.write('000100e', function (err) {
 					if (err) {
 						return console.log('Error on write: ', err.message);
 					}
-					document.getElementById('error').textContent = 'LETS FUCLING GOOOO';
+					document.getElementById('error').textContent =
+						'Data written';
 				});
+			});
+
+			serPort.on('data', function (data) {
+				console.log('Data:', data);
+			});
+
+			serPort.on('close', function () {
+				console.log('Port closed');
 			});
 
 			serPort.on('error', function (err) {
