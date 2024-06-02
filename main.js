@@ -1,8 +1,11 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const { SerialPort } = require('serialport');
 
+let mainWindow;
+let port;
+
 function createWindow() {
-	const win = new BrowserWindow({
+	mainWindow = new BrowserWindow({
 		width: 800,
 		height: 600,
 		webPreferences: {
@@ -12,20 +15,64 @@ function createWindow() {
 		}
 	});
 
-	win.loadFile('index.html');
-
-	const port = new SerialPort('COM3', {
-		baudRate: 9600
-	});
-
-	port.on('data', function (data) {
-		console.log('Data:', data);
-		win.webContents.send('data-received');
-	});
-
-	ipcMain.on('submit-time', (event, time) => {
-		port.write(time + 'e');
-	});
+	mainWindow.loadFile('index.html');
 }
 
-app.whenReady().then(createWindow);
+function initializeSerialConnection() {
+	SerialPort.list()
+		.then(ports => {
+			const arduinoPort = ports.find(
+				port =>
+					port.manufacturer && port.manufacturer.includes('Arduino')
+			);
+
+			if (arduinoPort) {
+				port = new SerialPort(arduinoPort.path, { baudRate: 9600 });
+
+				port.on('open', () => {
+					console.log('Serial port opened');
+				});
+
+				port.on('error', err => {
+					console.error('Error:', err.message);
+				});
+
+				port.on('data', data => {
+					console.log('Data from Arduino:', data);
+					mainWindow.webContents.send('data-received');
+				});
+			} else {
+				console.log('Arduino not found, retrying in 1 second...');
+				setTimeout(initializeSerialConnection, 1000);
+			}
+		})
+		.catch(err => {
+			console.error('Error:', err.message);
+		});
+}
+
+app.on('ready', () => {
+	createWindow();
+	initializeSerialConnection();
+});
+
+app.on('window-all-closed', () => {
+	if (process.platform !== 'darwin') {
+		app.quit();
+	}
+});
+
+app.on('activate', () => {
+	if (mainWindow === null) {
+		createWindow();
+	}
+});
+
+ipcMain.on('submit-time', (event, time) => {
+	if (port && port.isOpen) {
+		port.write(time + 'e');
+		console.log('Data sent to Arduino:', time + 'e');
+	} else {
+		console.error('Serial port is not open');
+	}
+});

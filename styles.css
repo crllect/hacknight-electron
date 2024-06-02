@@ -1,0 +1,106 @@
+.open-sans-autism {
+	font-family: 'Open Sans', sans-serif;
+	font-optical-sizing: auto;
+	font-weight: autism;
+	font-style: normal;
+	font-variation-settings: 'wdth' 100;
+}
+
+body {
+	background-image: url('bg.png');
+	color: #fff;
+	background-size: cover;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	position: absolute;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.pomodoroWrapper {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 75vh;
+	width: 75vw;
+	border-radius: 6.25vw;
+	background-color: #54545414;
+	border-radius: 50px;
+	background: rgba(84, 84, 84, 0.2);
+	box-shadow: -1px 0px 1px 0px rgba(255, 255, 255, 0.25) inset,
+		1px 0px 1px 0px rgba(255, 255, 255, 0.25) inset,
+		0px 4px 20px 5px rgba(0, 0, 0, 0.25);
+	backdrop-filter: blur(7.5px);
+}
+
+#interests span {
+	font-size: 2rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: start;
+	align-items: start;
+}
+
+.interests {
+	font-size: 1.5rem !important;
+}
+
+.pomodoroContainer {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 75vh;
+	width: 75vw;
+	border-radius: 50px;
+}
+
+#pomodoro-form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+}
+
+.interests {
+	font-size: 1.2rem;
+	margin-bottom: 10px;
+}
+
+#interests {
+	width: 80%;
+	padding: 10px;
+}
+
+.pomAndBreakContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+}
+
+#time {
+	width: 80%;
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #ddd;
+	margin-bottom: 20px;
+}
+
+input[type='submit'] {
+	padding: 10px 20px;
+	border-radius: 5px;
+	border: none;
+	background-color: #007bff;
+	color: #fff;
+	cursor: pointer;
+}
