@@ -38,13 +38,14 @@ async function listSerialPorts() {
 		if (adafruitPort) {
             document.getElementById('error').textContent =
 				'ohhh shittt';
-			console.log('Adafruit port found:', adafruitPort);
+
 			// Open a new SerialPort instance for the Adafruit port
-			const port = new SerialPort(adafruitPort.path, { baudRate: 9600 });
+			const serPort = new SerialPort(adafruitPort.path, { baudRate: 9600 });
+            
             document.getElementById('error').textContent =
             'naaaa';
 			// Write data to the port
-			port.write('000100e', err => {
+			serPort.write('000100e', err => {
 				if (err) {
 					return document.getElementById('error').textContent =
                     'big error :c ' + err.message;
