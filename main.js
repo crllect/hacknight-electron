@@ -23,7 +23,7 @@ function initializeSerialConnection() {
 		.then(ports => {
 			const arduinoPort = ports.find(
 				port =>
-					port.manufacturer && port.manufacturer.includes('a')
+					port.manufacturer && port.manufacturer.includes('101')
 			);
 
 			if (arduinoPort) {
