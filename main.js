@@ -1,5 +1,5 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
-const SerialPort = require('serialport');
+const { SerialPort } = require('serialport');
 
 let mainWindow;
 let port;
@@ -40,6 +40,25 @@ function initializeSerialConnection() {
 				port.on('data', data => {
 					console.log('Data from Arduino:', data);
 					mainWindow.webContents.send('data-received');
+				});
+
+				port.on('open', () => {
+					if (port.isOpen) {
+						console.log(
+							'Serial port opened and connected to Arduino'
+						);
+					}
+				});
+
+				ipcMain.on('submit-time', (event, time) => {
+					if (port && port.isOpen) {
+						port.write(time + 'e');
+						console.log('Data sent to Arduino:', time + 'e');
+					} else {
+						console.error(
+							'Serial port is not open or not connected to Arduino'
+						);
+					}
 				});
 			} else {
 				console.log('Arduino not found, retrying in 1 second...');
