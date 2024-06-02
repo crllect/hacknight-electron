@@ -1,5 +1,4 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
-const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
 const SerialPort = require('serialport');
 
