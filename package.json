@@ -1,13 +1,13 @@
 {
-  "name": "hacknight-electron",
-  "version": "1.0.0",
-  "description": "The frontend to my hacknight hackathon project",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron ."
-  },
-  "dependencies": {
-    "serialport": "^12.0.0",
-    "electron": "^30.0.9"
-  }
+	"name": "hacknight-electron",
+	"version": "1.0.0",
+	"description": "The frontend to my hacknight hackathon project",
+	"main": "main.js",
+	"scripts": {
+		"start": "electron ."
+	},
+	"dependencies": {
+		"serialport": "^12.0.0",
+		"electron": "^30.0.9"
+	}
 }
