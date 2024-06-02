@@ -76,3 +76,18 @@ ipcMain.on('submit-time', (event, time) => {
 		console.error('Serial port is not open');
 	}
 });
+
+port.on('open', () => {
+	if (port.isOpen) {
+		console.log('Serial port opened and connected to Arduino');
+	}
+});
+
+ipcMain.on('submit-time', (event, time) => {
+	if (port && port.isOpen) {
+		port.write(time + 'e');
+		console.log('Data sent to Arduino:', time + 'e');
+	} else {
+		console.error('Serial port is not open or not connected to Arduino');
+	}
+});
