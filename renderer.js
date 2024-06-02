@@ -32,10 +32,10 @@ async function listSerialPorts() {
 			'Right after adafruit port check';
 		console.log('Adafruit port:', adafruitPort);
 		document.getElementById('error').textContent = adafruitPort;
-		if (adafruitPort) {
+		if (adafruitPort && adafruitPort.path) {
 			document.getElementById('error').textContent = 'ohhh shittt';
 			try {
-                document.getElementById('error').textContent = 'farther';
+				document.getElementById('error').textContent = 'farther';
 				const serPort = new SerialPort(adafruitPort.path, {
 					baudRate: 9600
 				});
@@ -74,7 +74,11 @@ async function listSerialPorts() {
 					'Error when creating or interacting with SerialPort: ' +
 					error;
 			}
-		}
+		} else if (adafruitPort && adafruitPort.path) {
+            document.getElementById('error').textContent = 'adafruit path dont exist for some reaseon, but the port do';
+        } else {
+            document.getElementById('error').textContent = 'none of that shit exists :skull:';
+        }
 	});
 }
 
